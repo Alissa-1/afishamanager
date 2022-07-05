@@ -1,14 +1,10 @@
 package ru.netology.domain;
 
 public class MoviesManager {
-    protected String[] movies = new String[0];
+    protected Movies[] movies = new Movies[0];
     protected int limit;
 
-    public int getMoviesNumber() {
-        return movies.length;
-    }
-
-    public String[] findAll() {
+    public Movies[] findAll() {
         return movies;
     }
 
@@ -20,16 +16,16 @@ public class MoviesManager {
         limit = 10;
     }
 
-    public void add(String movie) {
-        String[] tmp = new String[movies.length + 1];
+    public void add(Movies movie) {
+        Movies[] tmp = new Movies[movies.length + 1];
         for (int i = 0; i < movies.length; i++) {
             tmp[i] = movies[i];
         }
-            tmp[tmp.length - 1] = movie;
-            movies = tmp;
+        tmp[tmp.length - 1] = movie;
+        movies = tmp;
     }
 
-    public String[] findLast() {
+    public Movies[] findLast() {
         int resultLength;
 
         if (movies.length < limit) {
@@ -38,7 +34,7 @@ public class MoviesManager {
             resultLength = limit;
         }
 
-        String[] ans = new String[resultLength];
+        Movies[] ans = new Movies[resultLength];
 
         for (int i = 0; i < ans.length; i++) {
             ans[i] = movies[movies.length - 1 - i];
