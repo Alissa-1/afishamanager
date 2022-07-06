@@ -2,6 +2,7 @@ package ru.netology.domain;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -26,8 +27,7 @@ public class MoviesManagerTest {
     public void shouldAddNoMovie() {
         MoviesManager manager = new MoviesManager();
 
-        manager.add(null); // подойдет ли ""?
-        Movies[] expected = {null};
+        Movies[] expected = {};
         Movies[] actual = manager.findAll();
 
         assertArrayEquals(expected, actual);
@@ -37,7 +37,22 @@ public class MoviesManagerTest {
     public void shouldAddOneMovie() {
         MoviesManager manager = new MoviesManager();
 
-        manager.add(movie12);
+        manager.add(movie1);
+
+        Movies[] actual = manager.findAll();
+
+        Movies[] expected = {movie1};
+
+        assertArrayEquals(expected, actual);
+
+    }
+
+    @Test
+    @Disabled
+    public void testArrayEquals() {
+        MoviesManager manager = new MoviesManager();
+
+        manager.add(movie1);
 
         Movies[] actual = manager.findAll();
 
@@ -45,9 +60,7 @@ public class MoviesManagerTest {
 
         Movies[] expected = {addedOne};
 
-        Objects.equals(expected, actual);
-
-        expected.equals(actual); // не понимаю, как нужно сравнивать
+        Arrays.equals(expected, actual); // !
 
     }
 
@@ -62,7 +75,7 @@ public class MoviesManagerTest {
         Movies[] expected = { movie1, movie2, movie3 };
         Movies[] actual = manager.findAll();
 
-        expected.equals(actual); // не понимаю, как нужно сравнивать
+        assertArrayEquals(expected, actual);
     }
 
     @Test
@@ -87,7 +100,7 @@ public class MoviesManagerTest {
                 movie5, movie4, movie3 };
         Movies[] actual = manager.findLast();
 
-        expected.equals(actual); // не понимаю, как нужно сравнивать
+        assertArrayEquals(expected, actual);
     }
 
     @Test
@@ -110,7 +123,7 @@ public class MoviesManagerTest {
                 movie1, movie1};
         Movies[] actual = manager.findLast();
 
-        expected.equals(actual); // не понимаю, как нужно сравнивать
+        assertArrayEquals(expected, actual);
     }
 
     @Test
@@ -132,7 +145,7 @@ public class MoviesManagerTest {
                 movie5, movie4, movie3, movie2, movie1  };
         Movies[] actual = manager.findLast();
 
-        expected.equals(actual); // не понимаю, как нужно сравнивать
+        assertArrayEquals(expected, actual);
     }
 
     @Test
@@ -153,7 +166,7 @@ public class MoviesManagerTest {
                 movie5, movie4, movie3, movie2, movie1  };
         Movies[] actual = manager.findLast();
 
-        expected.equals(actual); // не понимаю, как нужно сравнивать
+        assertArrayEquals(expected, actual);
     }
 
     @Test
@@ -165,7 +178,7 @@ public class MoviesManagerTest {
         Movies[] expected = empty;
         Movies[] actual = manager.findLast();
 
-        expected.equals(actual); // не понимаю, как нужно сравнивать
+        assertArrayEquals(expected, actual);
     }
 
     @Test
@@ -190,7 +203,7 @@ public class MoviesManagerTest {
                 movie5, movie4 };
         Movies[] actual = manager.findLast();
 
-        expected.equals(actual); // не понимаю, как нужно сравнивать
+        assertArrayEquals(expected, actual);
     }
 
     @Test
@@ -214,7 +227,7 @@ public class MoviesManagerTest {
         Movies[] expected = { movie12 };
         Movies[] actual = manager.findLast();
 
-        expected.equals(actual); // не понимаю, как нужно сравнивать
+        assertArrayEquals(expected, actual);
     }
 
     @Test
@@ -237,6 +250,6 @@ public class MoviesManagerTest {
         Movies[] empty = new Movies[0];
         Movies[] expected = empty;
         Movies[] actual = manager.findLast();
-        expected.equals(actual); // не понимаю, как нужно сравнивать
+        assertArrayEquals(expected, actual);
     }
 }
