@@ -6,10 +6,11 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
-import java.util.Objects;
 
 
 public class MoviesManagerTest {
+    MoviesRepository repo = new MoviesRepository();
+
     public Movies movie1 = new Movies("n1", "g1", 1);
     public Movies movie2 = new Movies("n2", "g2", 2);
     public Movies movie3 = new Movies("n3", "g3", 3);
@@ -23,9 +24,11 @@ public class MoviesManagerTest {
     public Movies movie11 = new Movies("n11", "g11", 11);
     public Movies movie12 = new Movies("n12", "g12", 12);
 
+
+
     @Test
     public void shouldAddNoMovie() {
-        MoviesManager manager = new MoviesManager();
+        MoviesManager manager = new MoviesManager(repo);
 
         Movies[] expected = {};
         Movies[] actual = manager.findAll();
@@ -35,7 +38,7 @@ public class MoviesManagerTest {
 
     @Test
     public void shouldAddOneMovie() {
-        MoviesManager manager = new MoviesManager();
+        MoviesManager manager = new MoviesManager(repo);
 
         manager.add(movie1);
 
@@ -50,7 +53,7 @@ public class MoviesManagerTest {
     @Test
     @Disabled
     public void testArrayEquals() {
-        MoviesManager manager = new MoviesManager();
+        MoviesManager manager = new MoviesManager(repo);
 
         manager.add(movie1);
 
@@ -66,7 +69,7 @@ public class MoviesManagerTest {
 
     @Test
     public void shouldAddThreeMovie() {
-        MoviesManager manager = new MoviesManager();
+        MoviesManager manager = new MoviesManager(repo);
 
         manager.add(movie1);
         manager.add(movie2);
@@ -80,7 +83,7 @@ public class MoviesManagerTest {
 
     @Test
     public void shouldReturnTenLastOfTwelveIfDefault() {
-        MoviesManager manager = new MoviesManager();
+        MoviesManager manager = new MoviesManager(repo);
 
         manager.add(movie1);
         manager.add(movie2);
@@ -105,7 +108,7 @@ public class MoviesManagerTest {
 
     @Test
     public void shouldReturnTenLastOfTwelveIfDefaultAndEqual() {
-        MoviesManager manager = new MoviesManager();
+        MoviesManager manager = new MoviesManager(repo);
 
         manager.add(movie1);
         manager.add(movie1);
@@ -128,7 +131,7 @@ public class MoviesManagerTest {
 
     @Test
     public void shouldReturnTenLastOfTenIfDefault() {
-        MoviesManager manager = new MoviesManager();
+        MoviesManager manager = new MoviesManager(repo);
 
         manager.add(movie1);
         manager.add(movie2);
@@ -150,7 +153,7 @@ public class MoviesManagerTest {
 
     @Test
     public void shouldReturnAllLastOfNineIfDefault() {
-        MoviesManager manager = new MoviesManager();
+        MoviesManager manager = new MoviesManager(repo);
 
         manager.add(movie1);
         manager.add(movie2);
@@ -171,11 +174,9 @@ public class MoviesManagerTest {
 
     @Test
     public void shouldReturnNoneOfEmptyStorageIfDefault() {
-        MoviesManager manager = new MoviesManager();
+        MoviesManager manager = new MoviesManager(repo);
 
-        Movies[] empty = new Movies[0];
-
-        Movies[] expected = empty;
+        Movies[] expected = new Movies[0];
         Movies[] actual = manager.findLast();
 
         assertArrayEquals(expected, actual);
@@ -183,7 +184,7 @@ public class MoviesManagerTest {
 
     @Test
     public void shouldReturnNineLastOfTwelve() {
-        MoviesManager manager = new MoviesManager(9);
+        MoviesManager manager = new MoviesManager(repo, 9);
 
         manager.add(movie1);
         manager.add(movie2);
@@ -208,7 +209,7 @@ public class MoviesManagerTest {
 
     @Test
     public void shouldReturnOneLastOfTwelve() {
-        MoviesManager manager = new MoviesManager(1);
+        MoviesManager manager = new MoviesManager(repo, 1);
 
         manager.add(movie1);
         manager.add(movie2);
@@ -232,7 +233,7 @@ public class MoviesManagerTest {
 
     @Test
     public void shouldReturnNoneLastOfTwelve() {
-        MoviesManager manager = new MoviesManager(0);
+        MoviesManager manager = new MoviesManager(repo, 0);
 
         manager.add(movie1);
         manager.add(movie2);
@@ -247,9 +248,118 @@ public class MoviesManagerTest {
         manager.add(movie11);
         manager.add(movie12);
 
-        Movies[] empty = new Movies[0];
-        Movies[] expected = empty;
+        Movies[] expected = new Movies[0];
         Movies[] actual = manager.findLast();
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldRemoveByIdIfFirst() {
+        MoviesManager manager = new MoviesManager(repo);
+
+        manager.add(movie1);
+        manager.add(movie2);
+        manager.add(movie3);
+
+        manager.removeById(movie1.getId());
+        Movies[] expected = { movie2, movie3 };
+        Movies[] actual = manager.findAll();
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldRemoveByIdIfMiddle() {
+        MoviesManager manager = new MoviesManager(repo);
+
+        manager.add(movie1);
+        manager.add(movie2);
+        manager.add(movie3);
+
+        manager.removeById(movie2.getId());
+        Movies[] expected = { movie1, movie3 };
+        Movies[] actual = manager.findAll();
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldRemoveByIdIfLast() {
+        MoviesManager manager = new MoviesManager(repo);
+
+        manager.add(movie1);
+        manager.add(movie2);
+        manager.add(movie3);
+
+        manager.removeById(movie3.getId());
+        Movies[] expected = { movie1, movie2 };
+        Movies[] actual = manager.findAll();
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldFindByIdIfFirst() {
+        MoviesManager manager = new MoviesManager(repo);
+
+        manager.add(movie1);
+        manager.add(movie2);
+        manager.add(movie3);
+
+        Movies expected = movie1;
+        Movies actual = manager.findById(1);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldFindByIdIfMiddle() {
+        MoviesManager manager = new MoviesManager(repo);
+
+        manager.add(movie1);
+        manager.add(movie2);
+        manager.add(movie3);
+
+        Movies expected = movie2;
+        Movies actual = manager.findById(2);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldFindByIdIfLast() {
+        MoviesManager manager = new MoviesManager(repo);
+
+        manager.add(movie1);
+        manager.add(movie2);
+        manager.add(movie3);
+
+        Movies expected = movie3;
+        Movies actual = manager.findById(3);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldFindByIdIfNoCatch() {
+        MoviesManager manager = new MoviesManager(repo);
+
+        manager.add(movie1);
+        manager.add(movie2);
+        manager.add(movie3);
+
+        Movies expected = null;
+        Movies actual = manager.findById(4);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldRemoveAll() {
+        MoviesManager manager = new MoviesManager(repo);
+
+        manager.add(movie1);
+        manager.add(movie2);
+        manager.add(movie3);
+
+        manager.removeAll();
+
+        Movies[] expected = {};
+        Movies[] actual = manager.findAll();
+
         assertArrayEquals(expected, actual);
     }
 }
