@@ -1,7 +1,7 @@
 package ru.netology.domain;
 
 public class MoviesManager {
-    MoviesRepository repo = new MoviesRepository();
+    protected MoviesRepository repo;
     protected int limit = 10;
 
     public MoviesManager(MoviesRepository repo, int limit) {
