@@ -13,8 +13,24 @@ public class MoviesManager {
         this.repo = repo;
     }
 
+    public void add(Movies movie) {
+        repo.add(movie);
+    }
+
     public Movies[] findAll() {
         return repo.findAll();
+    }
+
+    public Movies findById(int id) {
+        return repo.findById(id);
+    }
+
+    public void removeById(int id) {
+        repo.removeById(id);
+    }
+
+    public void removeAll() {
+        repo.removeAll();
     }
 
     public Movies[] findLast() {
